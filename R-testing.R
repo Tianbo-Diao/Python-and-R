@@ -4,7 +4,7 @@ library(Rfast)
 measure_runtime <- function(func, ...) {
   start_time = Sys.time()  
   result = do.call(func, list(...))
-  runtime = Sys.time() - start_time
+  runtime = as.numeric(Sys.time() - start_time, units = "secs")  # Convert runtime to seconds
   return(list(result = result, runtime = runtime))
 }
 
@@ -44,6 +44,7 @@ method_metrics <- function(method_result, beta_index, beta_value) {
   
   return(c(SC, CF, AMS, PSR, FDR, ME))
 }
+
 
 
 
