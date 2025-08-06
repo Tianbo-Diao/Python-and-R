@@ -34,16 +34,18 @@ cat("矩阵乘法时间: ", Matrix_result$runtime, " seconds\n")
 # mac mini M4 Accelerating R: 0.1 seconds, 0.12 seconds
 
 
-method_metrics <- function(method_result, beta_index, beta_value) {
-  SC = as.integer( all(beta_index %in% method_result$index) )
-  CF = base::setequal(method_result$index, beta_index)
-  AMS = length(method_result$index)
-  PSR = length( base::intersect(method_result$index, beta_index) ) / length(beta_index)
-  FDR = length( base::setdiff(method_result$index, beta_index) ) / length(method_result$index)
-  ME = sqrt(sum((beta_value - method_result$beta_value)^2))  
-  
+method_metrics <- function(method_result, beta_true) {
+  beta_index1 = which(beta_true !=0)
+  beta_index2 = which(method_result$beta !=0)
+  SC = as.integer( all(beta_index1 %in% beta_index2) )
+  CF = base::setequal(beta_index2, beta_index1)
+  AMS = length(beta_index2)
+  PSR = length( base::intersect(beta_index2, beta_index1) ) / length(beta_index1)
+  FDR = length( base::setdiff(beta_index2, beta_index1) ) / length(beta_index2)
+  ME = norm(as.matrix(method_result$beta - beta_true), type = 'f')
   return(c(SC, CF, AMS, PSR, FDR, ME))
 }
+
 
 
 
