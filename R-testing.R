@@ -48,17 +48,18 @@ sprintf("分布式随机数生成时间为 %.2f 秒", Distributed_result$runtime
 
 
 # metrics for method results
-method_metrics <- function(method_result, beta_true) {
+method_metrics <- function(method_beta, beta_true) {
   beta_index1 = which(beta_true !=0)
-  beta_index2 = which(method_result$beta !=0)
+  beta_index2 = which(method_beta !=0)
   SC = as.integer( all(beta_index1 %in% beta_index2) )
   CF = base::setequal(beta_index2, beta_index1)
   AMS = length(beta_index2)
   PSR = length( base::intersect(beta_index2, beta_index1) ) / length(beta_index1)
   FDR = length( base::setdiff(beta_index2, beta_index1) ) / length(beta_index2)
-  ME = norm(as.matrix(method_result$beta - beta_true), type = 'f')
+  ME = norm(as.matrix(method_beta - beta_true), type = 'f')
   return(c(SC, CF, AMS, PSR, FDR, ME))
 }
+
 
 
 
